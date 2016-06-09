@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|editor-beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     0.0.1
+// @version     0.0.2
 // @grant       none
 // ==/UserScript==
 (function() {
