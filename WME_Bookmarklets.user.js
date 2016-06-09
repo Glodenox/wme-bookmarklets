@@ -1,10 +1,10 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name        WME Bookmarklets
 // @author      Tom 'Glodenox' Puttemans
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|editor-beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     0.0.2
+// @version     0.0.3
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -131,7 +131,7 @@
     var addBookmarkletButton = document.createElement('button');
     addBookmarkletButton.className = 'btn btn-default';
     var addSpan = document.createElement('span');
-    addSpan.appendChild(document.createTextNode('?'));
+    addSpan.appendChild(document.createTextNode(''));
     addSpan.className = 'fa';
     addSpan.style.marginRight = '5px';
     addBookmarkletButton.appendChild(addSpan);
@@ -166,7 +166,7 @@
           tabs = userInfo.querySelector('.tab-content'),
           tabHandle = document.createElement('li'),
           tab = document.createElement('div');
-      tabHandle.innerHTML = '<a href="#sidepanel-bookmarklets" data-toggle="tab" title="' + I18n.t('bookmarklets.tab_title') + '"><span class="fa">?</span></a>';
+      tabHandle.innerHTML = '<a href="#sidepanel-bookmarklets" data-toggle="tab" title="' + I18n.t('bookmarklets.tab_title') + '"><span class="fa"></span></a>';
       if (recoveredTab) {
         tab = recoveredTab;
       } else {
@@ -204,7 +204,7 @@
       bookmarkletErrorClose.style.cursor = 'pointer';
       bookmarkletErrorClose.style.height = 'auto';
       bookmarkletErrorClose.style.outline = 'none';
-      bookmarkletErrorClose.appendChild(document.createTextNode('?'));
+      bookmarkletErrorClose.appendChild(document.createTextNode(''));
       bookmarkletErrorClose.addEventListener('click', function(e) {
         e.stopPropagation();
         bookmarkletError.style.display = 'none';
