@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|editor-beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     1.0.0
+// @version     1.0.1
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -53,7 +53,8 @@
         bookmarklet_script: 'Script',
         bookmarklet_error: 'Bookmarklet threw an error',
         message: 'Activate a bookmarklet or add a new one:',
-        bookmarklet_sources: 'Many Wazers have created bookmarklets to perform small tasks within the WME. Most of these can be found on <a href="https://wiki.waze.com/wiki/Bookmarklets" target="_blank">the wiki</a> or by <a href="https://www.waze.com/forum/search.php?keywords=Bookmarklet&terms=all&sv=0&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">seaching the forums</a>.'
+        bookmarklet_sources: 'Many Wazers have created bookmarklets to perform small tasks within the WME. Most of these can be found on <a href="https://wiki.waze.com/wiki/Bookmarklets" target="_blank">the wiki</a> or by <a href="https://www.waze.com/forum/search.php?keywords=Bookmarklet&terms=all&sv=0&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">seaching the forums</a>.',
+        bookmarklet_remove: 'Remove bookmarklet'
       }
     };
     om_strings.en_GB = om_strings.en;
@@ -195,6 +196,8 @@
         removeBookmarklet(bookmarklet);
       });
       bookmarkletRemove.appendChild(document.createTextNode(''));
+      bookmarkletRemove.title = I18n.t('bookmarklets.bookmarklet_remove');
+      $(bookmarkletRemove).tooltip();
       bookmarkletContainer.appendChild(bookmarkletRemove);
       bookmarkletContainer.addEventListener('mouseenter', function() {
         bookmarkletRemove.style.display = 'block';
@@ -259,7 +262,7 @@
       saveBookmarklets();
       bookmarkletList.removeChild(bookmarklet.container);
       if (bookmarklets.length == 0) {
-        document.getElementById('emptyBookmarklets').style.display = 'none';
+        document.getElementById('emptyBookmarklets').style.display = 'block';
       }
     }
   }
