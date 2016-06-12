@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|editor-beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     0.0.3
+// @version     1.0.0
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -12,7 +12,7 @@
   if (localStorage.WME_Bookmarklets) {
     importBookmarklets(JSON.parse(localStorage.WME_Bookmarklets).bookmarklets);
   }
- 
+
   function init(e) {
     if (e && e.user == null) {
       return;
@@ -34,7 +34,7 @@
         return;
       }
     }
-   
+
     // Deal with events mode
     if (Waze.app.modeController) {
       Waze.app.modeController.model.bind('change:mode', function(model, modeId) {
@@ -43,7 +43,7 @@
         }
       });
     }
-   
+
     var om_strings = {
       en: {
         tab_title: 'Bookmarklets',
@@ -53,7 +53,7 @@
         bookmarklet_script: 'Script',
         bookmarklet_error: 'Bookmarklet threw an error',
         message: 'Activate a bookmarklet or add a new one:',
-        bookmarklet_sources: 'Many Wazers have created bookmarklets to perform small tasks within the WME. Most of these can be found on <a href="https://wiki.waze.com/wiki/Bookmarklets" target="_blank">the wiki</a> or by <a href="https://www.waze.com/forum/search.php?keywords=Bookmarklet&terms=all&sv=0&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">seaching the forums</a>'
+        bookmarklet_sources: 'Many Wazers have created bookmarklets to perform small tasks within the WME. Most of these can be found on <a href="https://wiki.waze.com/wiki/Bookmarklets" target="_blank">the wiki</a> or by <a href="https://www.waze.com/forum/search.php?keywords=Bookmarklet&terms=all&sv=0&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300&t=0&submit=Search" target="_blank">seaching the forums</a>.'
       }
     };
     om_strings.en_GB = om_strings.en;
@@ -63,33 +63,27 @@
         I18n.translations[locale].bookmarklets = om_strings[locale];
       }
     }
-   
+
     var tab = addTab();
-    /*var versionInfo = document.createElement('a');
-    versionInfo.appendChild(document.createTextNode('v' + GM_info.script.version));
-    versionInfo.href = 'https://greasyfork.org/nl/scripts/20379-wme-bookmarklets/'; // TODO: to replace with forum link once published
-    versionInfo.style.float = 'right';
-    tab.appendChild(versionInfo);*/
     var message = document.createElement('p');
     message.appendChild(document.createTextNode(I18n.t('bookmarklets.message')));
     tab.appendChild(message);
-   
+
     var emptyList = document.createElement('span');
     emptyList.id = 'emptyBookmarklets';
     emptyList.style.fontStyle = 'italic';
     emptyList.style.display = (bookmarklets.length == 0 ? 'block' : 'none');
     emptyList.appendChild(document.createTextNode(I18n.t('bookmarklets.empty_list')));
     tab.appendChild(emptyList);
-   
+
     var bookmarkletList = document.createElement('div');
     bookmarkletList.className = 'result-list';
-    bookmarkletList.style.borderTop = '1px solid #e0e0e0';
-    bookmarkletList.style.marginBottom = '5px';
+    bookmarkletList.style.marginBottom = '1em';
     bookmarklets.forEach(function(bookmarklet) {
       addBookmarklet(bookmarklet);
     });
     tab.appendChild(bookmarkletList);
-   
+
     var addBookmarkletForm = document.createElement('form');
     var addBookmarkletTitle = document.createElement('h4');
     addBookmarkletTitle.appendChild(document.createTextNode(I18n.t('bookmarklets.add_bookmarklet')));
@@ -142,10 +136,6 @@
     });
     tab.appendChild(addBookmarkletButton);
     tab.appendChild(addBookmarkletForm);
-    var bookmarkletSources = document.createElement('p');
-    bookmarkletSources.innerHTML = I18n.t('bookmarklets.bookmarklet_sources');
-    tab.appendChild(bookmarkletSources);
-   
     addBookmarkletForm.addEventListener('submit', function(e) {
       e.preventDefault();
       addBookmarkletForm.style.display = 'none';
@@ -158,7 +148,17 @@
       saveBookmarklets();
       return false;
     }, true);
-   
+
+    var bookmarkletSources = document.createElement('p');
+    bookmarkletSources.innerHTML = I18n.t('bookmarklets.bookmarklet_sources');
+    bookmarkletSources.style.marginTop = '1em';
+    tab.appendChild(bookmarkletSources);
+    var versionInfo = document.createElement('a');
+    versionInfo.appendChild(document.createTextNode(GM_info.script.name + ' (v' + GM_info.script.version + ')'));
+    versionInfo.href = 'https://greasyfork.org/nl/scripts/20379-wme-bookmarklets/';
+    versionInfo.target = '_blank';
+    tab.appendChild(versionInfo);
+
     // Create a tab and possibly receive a previous tab to restore (usually in case of a mode change)
     function addTab(recoveredTab) {
       var userInfo = document.getElementById('user-info'),
@@ -178,11 +178,30 @@
       tabs.appendChild(tab);
       return tab;
     }
-   
+
     function addBookmarklet(bookmarklet) {
       document.getElementById('emptyBookmarklets').style.display = 'none';
       var bookmarkletContainer = document.createElement('div');
       bookmarkletContainer.className = 'result session-available';
+      var bookmarkletRemove = document.createElement('button');
+      bookmarkletRemove.style.position = 'absolute';
+      bookmarkletRemove.style.display = 'none';
+      bookmarkletRemove.style.fontSize = '14px';
+      bookmarkletRemove.style.top = '4px';
+      bookmarkletRemove.style.right = '4px'
+      bookmarkletRemove.className = 'btn btn-default fa';
+      bookmarkletRemove.addEventListener('click', function(e) {
+        e.stopPropagation();
+        removeBookmarklet(bookmarklet);
+      });
+      bookmarkletRemove.appendChild(document.createTextNode(''));
+      bookmarkletContainer.appendChild(bookmarkletRemove);
+      bookmarkletContainer.addEventListener('mouseenter', function() {
+        bookmarkletRemove.style.display = 'block';
+      });
+      bookmarkletContainer.addEventListener('mouseleave', function() {
+        bookmarkletRemove.style.display = 'none';
+      });
       var bookmarkletName = document.createElement('div');
       bookmarkletName.appendChild(document.createTextNode(bookmarklet.name));
       bookmarkletContainer.appendChild(bookmarkletName);
@@ -205,7 +224,7 @@
       bookmarkletErrorClose.style.height = 'auto';
       bookmarkletErrorClose.style.outline = 'none';
       bookmarkletErrorClose.appendChild(document.createTextNode(''));
-      bookmarkletErrorClose.addEventListener('click', function(e) {
+      bookmarkletError.addEventListener('click', function(e) {
         e.stopPropagation();
         bookmarkletError.style.display = 'none';
       }, true);
@@ -229,10 +248,16 @@
         }
       });
       bookmarkletList.appendChild(bookmarkletContainer);
+      bookmarklet.container = bookmarkletContainer;
     }
-   
-    function removeBookmarklet(name) {
-      // TODO: implement
+
+    function removeBookmarklet(bookmarklet) {
+      var idx = bookmarklets.indexOf(bookmarklet);
+      if (idx > -1) {
+        bookmarklets.splice(idx, 1);
+      }
+      saveBookmarklets();
+      bookmarkletList.removeChild(bookmarklet.container);
       if (bookmarklets.length == 0) {
         document.getElementById('emptyBookmarklets').style.display = 'none';
       }
@@ -244,7 +269,7 @@
       bookmarklets.push(bookmarklet);
     });
   }
- 
+
   function saveBookmarklets() {
     var storage;
     if (typeof localStorage.WME_Bookmarklets == 'undefined') {
@@ -252,7 +277,12 @@
     } else {
       storage = JSON.parse(localStorage.WME_Bookmarklets);
     }
-    storage.bookmarklets = bookmarklets;
+    storage.bookmarklets = bookmarklets.map(function(bookmarklet) {
+      return {
+        'name': bookmarklet.name,
+        'script': bookmarklet.script
+      };
+    });
     localStorage.WME_Bookmarklets = JSON.stringify(storage);
   }
 
