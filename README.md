@@ -4,7 +4,7 @@ This userscript augments the [Waze Map Editor](https://www.waze.com/editor/) by 
 
 ## How to use
 
-![Bookmarklets](https://tomputtemans.com/waze-scripts/images/Bookmarklets-sidebar.png)
+![Bookmarklets](https://tomputtemans.com/waze-scripts/images/Bookmarklet-sidebar.png)
 
 This userscript allows you to add bookmarklets to a list in a tab on the side.
 
@@ -24,6 +24,10 @@ __When installing userscripts always pay attention to the site(s) on which the s
 After installing a userscript, you will be able to find it working on the site(s) specified. Do note that if you had the page open before installing the userscript, you will first need to refresh the page.
 
 GreaseMonkey and TamperMonkey will occasionally check for new versions of these scripts. You will get a notification when a new version has been found and installed.
+
+## Thanks
+
+This idea was pitched to me by carloslaso, so I'd like to thank him for that.
 
 ## Feedback and suggestions
 

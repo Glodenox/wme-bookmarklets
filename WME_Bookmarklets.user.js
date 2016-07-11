@@ -3,8 +3,8 @@
 // @author      Tom 'Glodenox' Puttemans
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
-// @include     /^https:\/\/(www|editor-beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     1.0.1
+// @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
+// @version     1.0.2
 // @grant       none
 // ==/UserScript==
 (function() {
