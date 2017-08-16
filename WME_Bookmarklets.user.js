@@ -3,8 +3,8 @@
 // @author      Tom 'Glodenox' Puttemans
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
-// @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor\/.*$/
-// @version     1.0.3
+// @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
+// @version     1.0.4
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -57,7 +57,7 @@
         bookmarklet_remove: 'Remove bookmarklet'
       }
     };
-    om_strings.en_GB = om_strings['en-US'] = om_strings.en;
+    om_strings['en-GB'] = om_strings['en-US'] = om_strings.en;
     for (var i = 0; i < I18n.availableLocales.length; i++) {
       var locale = I18n.availableLocales[i];
       if (I18n.translations[locale]) {
