@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
-// @version     1.0.5
+// @version     1.0.4
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -266,7 +266,7 @@
     for (var i = 0; i < Object.keys(translations).length; i++) {
       var locale = Object.keys(translations)[i];
       if (I18n.currentLocale() == locale) {
-        I18n.translations[locale].bookmarklets.prefs = translations[locale].prefs;
+        I18n.translations[locale].bookmarklets = translations[locale];
         return;
       }
     }
