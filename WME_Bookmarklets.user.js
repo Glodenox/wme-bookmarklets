@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
-// @version     1.0.4
+// @version     1.0.5
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -26,11 +26,11 @@
       setTimeout(init, 300);
       return;
     }
-    if (!Waze.loginManager.hasUser()) {
+    if (!Waze.loginManager.user) {
       Waze.loginManager.events.register('login', null, init);
       Waze.loginManager.events.register('loginStatus', null, init);
       // Double check as event might have triggered already
-      if (!Waze.loginManager.hasUser()) {
+      if (!Waze.loginManager.user) {
         return;
       }
     }
@@ -44,7 +44,7 @@
       });
     }
 
-    var om_strings = {
+    var bookmarklets_strings = {
       en: {
         tab_title: 'Bookmarklets',
         add_bookmarklet: 'Add bookmarklet',
@@ -57,13 +57,7 @@
         bookmarklet_remove: 'Remove bookmarklet'
       }
     };
-    om_strings['en-GB'] = om_strings['en-US'] = om_strings.en;
-    for (var i = 0; i < I18n.availableLocales.length; i++) {
-      var locale = I18n.availableLocales[i];
-      if (I18n.translations[locale]) {
-        I18n.translations[locale].bookmarklets = om_strings[locale];
-      }
-    }
+    setTranslations(bookmarklets_strings);
 
     var tab = addTab();
     var message = document.createElement('p');
@@ -263,6 +257,17 @@
       bookmarkletList.removeChild(bookmarklet.container);
       if (bookmarklets.length == 0) {
         document.getElementById('emptyBookmarklets').style.display = 'block';
+      }
+    }
+  }
+
+  function setTranslations(translations) {
+    I18n.translations[I18n.currentLocale()].bookmarklets = translations.en;
+    for (var i = 0; i < Object.keys(translations).length; i++) {
+      var locale = Object.keys(translations)[i];
+      if (I18n.currentLocale() == locale) {
+        I18n.translations[locale].bookmarklets.prefs = translations[locale].prefs;
+        return;
       }
     }
   }
