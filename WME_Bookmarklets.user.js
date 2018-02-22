@@ -22,22 +22,22 @@
       log('user-info element not yet available, page still loading');
       return;
     }
-    if (typeof Waze.loginManager === 'undefined') {
+    if (typeof W.loginManager === 'undefined') {
       setTimeout(init, 300);
       return;
     }
-    if (!Waze.loginManager.user) {
-      Waze.loginManager.events.register('login', null, init);
-      Waze.loginManager.events.register('loginStatus', null, init);
+    if (!W.loginManager.user) {
+      W.loginManager.events.register('login', null, init);
+      W.loginManager.events.register('loginStatus', null, init);
       // Double check as event might have triggered already
-      if (!Waze.loginManager.user) {
+      if (!W.loginManager.user) {
         return;
       }
     }
 
     // Deal with events mode
-    if (Waze.app.modeController) {
-      Waze.app.modeController.model.bind('change:mode', function(model, modeId) {
+    if (W.app.modeController) {
+      W.app.modeController.model.bind('change:mode', function(model, modeId) {
         if (modeId == 0) {
           addTab(tab);
         }
