@@ -4,7 +4,7 @@
 // @namespace   http://www.tomputtemans.com/
 // @description Put bookmarklets in a tab and provide a better code execution environment
 // @include     /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
-// @version     1.0.6
+// @version     1.0.7
 // @grant       none
 // ==/UserScript==
 (function() {
@@ -33,15 +33,6 @@
       if (!W.loginManager.user) {
         return;
       }
-    }
-
-    // Deal with events mode
-    if (W.app.modeController) {
-      W.app.modeController.model.bind('change:mode', function(model, modeId) {
-        if (modeId == 0) {
-          addTab(tab);
-        }
-      });
     }
 
     var bookmarklets_strings = {
